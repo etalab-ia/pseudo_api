@@ -5,7 +5,6 @@ from typing import Callable, List, Tuple
 
 from flair.data import Token, Sentence
 from sacremoses import MosesTokenizer, MosesDetokenizer, MosesPunctNormalizer
-from flair.visual.ner_html import render_ner_html
 
 moses_detokenize = MosesDetokenizer(lang="fr")
 
@@ -21,7 +20,7 @@ def create_conll_output(sentences_tagged: List[Sentence]) -> str:
     return conll_str
 
 
-def prepare_output(text: str, tagger, word_tokenizer=None, request_type: str= "api"):
+def prepare_output(text: str, tagger, word_tokenizer=None, request_type: str = "api"):
     if not word_tokenizer:
         tokenizer = MOSES_TOKENIZER
     else:
@@ -41,13 +40,13 @@ def prepare_output(text: str, tagger, word_tokenizer=None, request_type: str= "a
         tagged_str, pseudonymized_str = create_api_output(sentences_tagged=sentences_tagged)
         return tagged_str, pseudonymized_str
 
+
 def create_tagged_text(sentences_tagged: List[Sentence]):
     # Iterate over the modified sentences to recreate the text (tagged)
     tagged_str = ""
     for sent in sentences_tagged:
         temp_str = sent.to_tagged_string()
         tagged_str += temp_str + "\n\n"
-    foo = render_ner_html(sentences_tagged)
     return tagged_str
 
 
@@ -79,12 +78,14 @@ def create_pseudonymized_text(sentences_tagged: List[Sentence]):
 
     return pseudonymized_str
 
+
 def create_api_output(sentences_tagged: List[Sentence]) -> Tuple[str, str]:
     "We create two output texts: tagged and pseudonyimzed"
     tagged_str = create_tagged_text(sentences_tagged=sentences_tagged)
     pseudonymized_str = create_pseudonymized_text(sentences_tagged=sentences_tagged)
 
     return tagged_str, pseudonymized_str
+
 
 # ENTITIES = {"PER_PRENOM": "PRENOM", "PER_NOM": "NOM", "LOC": "ADRESSE"}
 

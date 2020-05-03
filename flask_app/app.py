@@ -1,4 +1,5 @@
 import logging
+import os
 
 from flair.models import SequenceTagger
 from flask import Flask
@@ -10,7 +11,10 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 server = Flask(__name__)
-TAGGER = SequenceTagger.load('/home/pavel/code/pseudo_conseil_etat/models/flair_embeds/1600_200_200/best-model.pt')
+
+# Env variables
+MODEL_PATH = os.environ.get('PSEUDO_MODEL_PATH', './model/best-model.pt')
+TAGGER = SequenceTagger.load(MODEL_PATH)
 
 
 def run_demo_request():
