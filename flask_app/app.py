@@ -1,11 +1,12 @@
 import logging
 import os
 
+import stopwatch
 from flair.models import SequenceTagger
 from flask import Flask
 from flask import request, jsonify
 
-from flask_app.data_ETL import prepare_output
+from flask_app.data_ETL import prepare_output, sw
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -49,6 +50,7 @@ def run_pseudonymize_request():
     except Exception as e:
         logger.error(e)
     finally:
+        print(stopwatch.format_report(sw.get_last_aggregated_report()))
         return jsonify(data)
 
 

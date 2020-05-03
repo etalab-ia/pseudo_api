@@ -7,7 +7,8 @@ from flair.data import Token, Sentence
 from sacremoses import MosesTokenizer, MosesDetokenizer, MosesPunctNormalizer
 
 moses_detokenize = MosesDetokenizer(lang="fr")
-
+import stopwatch
+sw = stopwatch.StopWatch()
 
 def create_conll_output(sentences_tagged: List[Sentence]) -> str:
     conll_str: str = ""
@@ -21,24 +22,25 @@ def create_conll_output(sentences_tagged: List[Sentence]) -> str:
 
 
 def prepare_output(text: str, tagger, word_tokenizer=None, request_type: str = "api"):
-    if not word_tokenizer:
-        tokenizer = MOSES_TOKENIZER
-    else:
-        tokenizer = word_tokenizer
+    with sw.timer("root"):
+        if not word_tokenizer:
+            tokenizer = MOSES_TOKENIZER
+        else:
+            tokenizer = word_tokenizer
 
-    text = [t.strip() for t in text.split("\n") if t.strip()]
-
-    sentences_tagged = tagger.predict(sentences=text,
-                                      mini_batch_size=32,
-                                      embedding_storage_mode="none",
-                                      use_tokenizer=tokenizer,
-                                      verbose=True)
-    if request_type == "demo":
-        conll_str = create_conll_output(sentences_tagged=sentences_tagged)
-        return conll_str
-    elif request_type == "api":
-        tagged_str, pseudonymized_str = create_api_output(sentences_tagged=sentences_tagged)
-        return tagged_str, pseudonymized_str
+        text = [t.strip() for t in text.split("\n") if t.strip()]
+        with sw.timer('model_annotation'):
+            sentences_tagged = tagger.predict(sentences=text,
+                                              mini_batch_size=32,
+                                              embedding_storage_mode="none",
+                                              use_tokenizer=tokenizer,
+                                              verbose=True)
+        if request_type == "demo":
+            conll_str = create_conll_output(sentences_tagged=sentences_tagged)
+            return conll_str
+        elif request_type == "api":
+            tagged_str, pseudonymized_str = create_api_output(sentences_tagged=sentences_tagged)
+            return tagged_str, pseudonymized_str
 
 
 def create_tagged_text(sentences_tagged: List[Sentence]):
