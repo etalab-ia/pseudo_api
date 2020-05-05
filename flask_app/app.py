@@ -6,7 +6,7 @@ from flair.models import SequenceTagger
 from flask import Flask
 from flask import request, jsonify
 
-from flask_app.data_ETL import prepare_output, sw
+from data_ETL import prepare_output, sw
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -32,6 +32,7 @@ def run_demo_request():
     except Exception as e:
         logger.error(e)
     finally:
+        print(stopwatch.format_report(sw.get_last_aggregated_report()))
         return jsonify(data)
 
 
@@ -54,7 +55,7 @@ def run_pseudonymize_request():
         return jsonify(data)
 
 
-@server.route('/pseudoniymize_demo', methods=['GET', 'POST'])
+@server.route('/pseudonymize_demo', methods=['GET', 'POST'])
 def pseudonymize_demo():
     if request.method == 'GET':
         return 'The model is up and running. Send a POST request'
@@ -62,7 +63,7 @@ def pseudonymize_demo():
         return run_demo_request()
 
 
-@server.route('/pseudonimyze', methods=['GET', 'POST'])
+@server.route('/pseudonymize', methods=['GET', 'POST'])
 def pseudonymize():
     if request.method == 'GET':
         return 'The model is up and running. Send a POST request'

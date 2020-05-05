@@ -12,7 +12,6 @@ sw = stopwatch.StopWatch()
 
 def create_conll_output(sentences_tagged: List[Sentence]) -> str:
     conll_str: str = ""
-    conll_str += f"-DOCSTART-\tO\n\n"
     for sent_pred in sentences_tagged:
         for tok_pred in sent_pred:
             result_str = f"{moses_detokenize.tokenize([tok_pred.text])}\t{tok_pred.get_tag('ner').value}"
