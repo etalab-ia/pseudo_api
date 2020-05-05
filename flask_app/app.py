@@ -18,24 +18,6 @@ MODEL_PATH = os.environ.get('PSEUDO_MODEL_PATH', './model/best-model.pt')
 TAGGER = SequenceTagger.load(MODEL_PATH)
 
 
-def run_demo_request():
-    data = {"success": False}
-    try:
-        if request.form.get("text"):
-            text = request.form.get("text")
-            logging.info("Tagging text with model...")
-            # Predict and return a CoNLL string to send to the web demo app
-            conll_str = prepare_output(text=text, tagger=TAGGER, request_type="demo")
-            data["conll_tagged_text"] = conll_str
-            data["success"] = True
-
-    except Exception as e:
-        logger.error(e)
-    finally:
-        print(stopwatch.format_report(sw.get_last_aggregated_report()))
-        return jsonify(data)
-
-
 def run_pseudonymize_request():
     data = {"success": False}
     output_types = ["pseudonymized", "tagged", "conll"]
@@ -48,7 +30,6 @@ def run_pseudonymize_request():
             if output_type not in output_types:
                 logging.warning("Your output type is not supported. I will give you the text pseudonymized.")
                 output_type = "pseudonymized"
-
 
         if request.form.get("text"):
             text = request.form.get("text")
@@ -63,14 +44,6 @@ def run_pseudonymize_request():
     finally:
         print(stopwatch.format_report(sw.get_last_aggregated_report()))
         return jsonify(data)
-
-
-@server.route('/pseudonymize_demo', methods=['GET', 'POST'])
-def pseudonymize_demo():
-    if request.method == 'GET':
-        return 'The model is up and running. Send a POST request'
-    else:
-        return run_demo_request()
 
 
 @server.route('/pseudonymize', methods=['GET', 'POST'])
