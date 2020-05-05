@@ -20,7 +20,7 @@ def create_conll_output(sentences_tagged: List[Sentence]) -> str:
     return conll_str
 
 
-def prepare_output(text: str, tagger, word_tokenizer=None, request_type: str = "api"):
+def prepare_output(text: str, tagger, word_tokenizer=None, output_type: str = "pseudonymized"):
     with sw.timer("root"):
         if not word_tokenizer:
             tokenizer = MOSES_TOKENIZER
@@ -34,12 +34,15 @@ def prepare_output(text: str, tagger, word_tokenizer=None, request_type: str = "
                                               embedding_storage_mode="none",
                                               use_tokenizer=tokenizer,
                                               verbose=True)
-        if request_type == "demo":
-            conll_str = create_conll_output(sentences_tagged=sentences_tagged)
-            return conll_str
-        elif request_type == "api":
-            tagged_str, pseudonymized_str = create_api_output(sentences_tagged=sentences_tagged)
-            return tagged_str, pseudonymized_str
+
+        if output_type == "conll":
+            api_output = create_conll_output(sentences_tagged=sentences_tagged)
+        elif output_type == "tagged":
+            api_output = create_tagged_text(sentences_tagged=sentences_tagged)
+        elif output_type == "pseudonymized":
+            api_output = create_pseudonymized_text(sentences_tagged=sentences_tagged)
+
+        return api_output
 
 
 def create_tagged_text(sentences_tagged: List[Sentence]):

@@ -38,14 +38,24 @@ def run_demo_request():
 
 def run_pseudonymize_request():
     data = {"success": False}
+    output_types = ["pseudonymized", "tagged", "conll"]
     try:
+        if not request.form.get("output_type"):
+            logging.info("No tags were indicated. I will give you the text pseudonymized.")
+            output_type = "pseudonymized"
+        else:
+            output_type = request.form.get("output_type")
+            if output_type not in output_types:
+                logging.warning("Your output type is not supported. I will give you the text pseudonymized.")
+                output_type = "pseudonymized"
+
+
         if request.form.get("text"):
             text = request.form.get("text")
             logging.info("Tagging text with model...")
             # Predict and return a CoNLL string to send to the web demo app
-            tagged_str, pseudonymized_str = prepare_output(text=text, tagger=TAGGER, request_type="api")
-            data["tagged_text"] = tagged_str
-            data["pseudonymized_text"] = pseudonymized_str
+            output = prepare_output(text=text, tagger=TAGGER, output_type=output_type)
+            data[output_type] = output
             data["success"] = True
 
     except Exception as e:

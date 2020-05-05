@@ -2,9 +2,9 @@
 
 ## Running the solution
 
-In order to run this solution, you just have to install Docker, Docker compose, then clone this repository, and then:
+In order to run this solution, you just have to install Docker, Docker compose, then clone this repository, and then run:
 ```
-run bash run_docker.sh
+bash run_docker.sh
 ```
 
 For Docker installation instructions follow:
