@@ -14,8 +14,8 @@ logger = logging.getLogger(__name__)
 server = Flask(__name__)
 
 # Env variables
-MODEL_PATH = os.environ.get('PSEUDO_MODEL_PATH', './model/best-model.pt')
-TAGGER = SequenceTagger.load(MODEL_PATH)
+PSEUDO_MODEL_PATH = os.environ.get('PSEUDO_MODEL_PATH', './model/best-model.pt')
+TAGGER = SequenceTagger.load(PSEUDO_MODEL_PATH)
 
 
 def run_pseudonymize_request():
