@@ -1,13 +1,13 @@
 version: '3'
 
 services:
-  flask_app:
-    container_name: flask_app
+  pseudo_api:
+    container_name: pseudo_api
     restart: always
-    build: ./flask_app
+    build: ./pseudo_api
     ports:
       - "8000:8000"
-    command: gunicorn -w 1 -b 0.0.0.0:8000 wsgi:server
+    command: gunicorn -w 3 --timeout 90 -b 0.0.0.0:8000 wsgi:server
 
   nginx:
     container_name: nginx
@@ -16,4 +16,4 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - flask_app
+      - pseudo_api

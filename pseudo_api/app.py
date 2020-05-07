@@ -42,7 +42,7 @@ def run_pseudonymize_request():
     except Exception as e:
         logger.error(e)
     finally:
-        print(stopwatch.format_report(sw.get_last_aggregated_report()))
+        logger.info(stopwatch.format_report(sw.get_last_aggregated_report()))
         return jsonify(data)
 
 
