@@ -1,7 +1,6 @@
 FROM continuumio/miniconda3
 
-WORKDIR usr/src/flask_app
-
+WORKDIR usr/src/pseudo_api
 
 ADD environment.yml environment.yml
 
