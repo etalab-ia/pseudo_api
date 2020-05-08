@@ -46,7 +46,7 @@ def run_pseudonymize_request():
         return jsonify(data)
 
 
-@server.route('/pseudonymize', methods=['GET', 'POST'])
+@server.route('/', methods=['GET', 'POST'])
 def pseudonymize():
     if request.method == 'GET':
         return 'The model is up and running. Send a POST request'
