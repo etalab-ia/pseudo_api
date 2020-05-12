@@ -8,7 +8,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-    - /home/pavel/code/pseudo_conseil_etat/models/flair_embeds/1600_200_200/best-model.pt:/usr/src/pseudo_api/model/best-model.pt
+    - ${PSEUDO_MODEL_PATH}:/usr/src/pseudo_api/model/best-model.pt
     command: gunicorn -w 3 --timeout 90 -b 0.0.0.0:8000 wsgi:server
 
   nginx:

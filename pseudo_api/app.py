@@ -21,8 +21,15 @@ TAGGER = SequenceTagger.load(PSEUDO_MODEL_PATH)
 
 
 def run_stats_request():
-    stats_dict = SqliteDict('./api_stats.sqlite', autocommit=True)
-    return jsonify(dict(stats_dict))
+    data = {"success": False}
+    try:
+        stats_dict = dict(SqliteDict('./api_stats.sqlite', autocommit=True))
+        data["success"] = "success"
+        data["stats_info"] = stats_dict
+    except Exception as e:
+        logger.error(e)
+    finally:
+        return jsonify(data)
 
 
 def run_pseudonymize_request():
