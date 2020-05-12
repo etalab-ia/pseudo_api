@@ -14,11 +14,6 @@ import stopwatch
 sw = stopwatch.StopWatch()
 
 
-def read_db():
-    stats = SqliteDict('./my_db.sqlite', autocommit=True)
-    pass
-
-
 def create_conll_output(sentences_tagged: List[Sentence]):
     tags = []
     conll_str: str = ""
@@ -71,7 +66,6 @@ def update_stats(analysis_stats: dict, analysis_ner_stats: dict, time_info: stop
             if k in old_dict:
                 old_dict[k] += v
 
-
     # get previous values
     old_nb_analyzed_documents = analysis_stats.get("nb_analyzed_documents", 0)
     old_nb_analyzed_sentences = analysis_stats.get("nb_analyzed_sentences", 0)
@@ -85,16 +79,15 @@ def update_stats(analysis_stats: dict, analysis_ner_stats: dict, time_info: stop
 
     # add entities tags freqs
     update_dict_values(analysis_stats, analysis_ner_stats)
-    # analysis_stats.update(analysis_ner_stats)
 
     # deal with time stats
     delta_ms, _, _ = time_info.aggregated_values["root"]
     analysis_stats["avg_time_per_doc"] = update_averages(old_avg_time,
                                                          old_nb_analyzed_documents, delta_ms)
     analysis_stats["avg_time_per_sentence"] = update_averages(old_avg_time_per_sent,
-                                                          old_nb_analyzed_sentences,
-                                                          delta_ms / analysis_stats[
-                                                              "nb_analyzed_sentences"])
+                                                              old_nb_analyzed_sentences,
+                                                              delta_ms / analysis_stats[
+                                                                  "nb_analyzed_sentences"])
 
     analysis_stats[f"output_type_{output_type}"] = old_output_types_freq + 1
 
