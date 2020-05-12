@@ -66,6 +66,12 @@ def update_stats(analysis_stats: dict, analysis_ner_stats: dict, time_info: stop
     def update_averages(avg: float, size: int, value: float):
         return (size * avg + value) / (size + 1)
 
+    def update_dict_values(old_dict: dict, new_dict: dict):
+        for k, v in new_dict.items():
+            if k in old_dict:
+                old_dict[k] += v
+
+
     # get previous values
     old_nb_analyzed_documents = analysis_stats.get("nb_analyzed_documents", 0)
     old_nb_analyzed_sentences = analysis_stats.get("nb_analyzed_sentences", 0)
@@ -78,7 +84,8 @@ def update_stats(analysis_stats: dict, analysis_ner_stats: dict, time_info: stop
         "nb_analyzed_sentences")
 
     # add entities tags freqs
-    analysis_stats.update(analysis_ner_stats)
+    update_dict_values(analysis_stats, analysis_ner_stats)
+    # analysis_stats.update(analysis_ner_stats)
 
     # deal with time stats
     delta_ms, _, _ = time_info.aggregated_values["root"]
