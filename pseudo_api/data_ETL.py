@@ -6,7 +6,6 @@ from typing import Callable, List, Tuple
 
 from flair.data import Token, Sentence
 from sacremoses import MosesTokenizer, MosesDetokenizer, MosesPunctNormalizer
-from sqlitedict import SqliteDict
 
 moses_detokenize = MosesDetokenizer(lang="fr")
 import stopwatch
