@@ -64,6 +64,9 @@ def update_stats(analysis_stats: dict, analysis_ner_stats: dict, time_info: stop
         for k, v in new_dict.items():
             if k in old_dict:
                 old_dict[k] += v
+            else:
+                old_dict[k] = v
+        return old_dict
 
     # get previous values
     old_nb_analyzed_documents = analysis_stats.get("nb_analyzed_documents", 0)
@@ -77,7 +80,7 @@ def update_stats(analysis_stats: dict, analysis_ner_stats: dict, time_info: stop
         "nb_analyzed_sentences")
 
     # add entities tags freqs
-    update_dict_values(analysis_stats, analysis_ner_stats)
+    analysis_stats = update_dict_values(analysis_stats, analysis_ner_stats)
 
     # deal with time stats
     delta_ms, _, _ = time_info.aggregated_values["root"]
