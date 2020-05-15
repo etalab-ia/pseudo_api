@@ -51,7 +51,7 @@ def run_pseudonymize_request():
             logging.info("Tagging text with model...")
             # Predict and return a CoNLL string to send to the web demo app
             output, analysis_ner_stats = prepare_output(text=text, tagger=TAGGER, output_type=output_type)
-            data[output_type] = output
+            data["text"] = output
             data["success"] = True
             # stats_dict[:]
     except Exception as e:

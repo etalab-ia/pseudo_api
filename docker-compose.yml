@@ -8,8 +8,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
-    - ${PSEUDO_MODEL_PATH}:/usr/src/pseudo_api/model/best-model.pt
-    command: gunicorn -w 3 --timeout 90 -b 0.0.0.0:8000 wsgi:server
+      - ${PSEUDO_MODEL_PATH}:/usr/src/pseudo_api/model/best-model.pt
+    command: gunicorn -w 2 --timeout 90 -b 0.0.0.0:8000 wsgi:server
 
   nginx:
     container_name: nginx
