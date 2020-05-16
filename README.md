@@ -99,7 +99,7 @@ Returns a map with the statistics of the API utilisation.
         "output_type_pseudonymized": 3,
         "output_type_tagged": 4
     },
-    "success": "success"
+    "success": true
 }
 ```
 
