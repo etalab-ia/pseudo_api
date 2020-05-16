@@ -24,7 +24,7 @@ def run_stats_request():
     data = {"success": False}
     try:
         stats_dict = dict(SqliteDict('./api_stats.sqlite', autocommit=True))
-        data["success"] = "success"
+        data["success"] = True
         data["stats_info"] = stats_dict
     except Exception as e:
         logger.error(e)
