@@ -35,12 +35,14 @@ def prepare_output(text: str, tagger: SequenceTagger, word_tokenizer=None, outpu
         else:
             tokenizer = word_tokenizer
 
-        text = [t.strip() for t in text.split("\n") if t.strip()]
+        # text = [t.strip() for t in text.split("\n") if t.strip()]
+        text_sentences = [Sentence(t.strip(), use_tokenizer=tokenizer)
+                          for t in text.split("\n") if t.strip()]
         with sw.timer('model_annotation'):
-            sentences_tagged = tagger.predict(sentences=text,
+            sentences_tagged = tagger.predict(sentences=text_sentences,
                                               mini_batch_size=32,
                                               embedding_storage_mode="none",
-                                              use_tokenizer=tokenizer,
+                                              # use_tokenizer=tokenizer,
                                               verbose=True)
 
         if output_type == "conll":
