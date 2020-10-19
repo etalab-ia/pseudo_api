@@ -44,7 +44,7 @@ def save_text_file(text: str, output_file:Path):
 
 def run(doc_path: Path):
     text = doc2txt(doc_path=doc_path)
-    output_text = Path(doc_path.stem + ".txt")
+    output_text = Path(doc_path.stem + "_anon.txt")
     output, analysis_ner_stats = prepare_output(text=text, tagger=TAGGER, output_type="pseudonymized")
     save_text_file(output, output_file=Path(output_text))
     print(output)
