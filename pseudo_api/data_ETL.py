@@ -39,18 +39,18 @@ def prepare_output(text: str, tagger: SequenceTagger, word_tokenizer=None, outpu
         text_sentences = [Sentence(t.strip(), use_tokenizer=tokenizer)
                           for t in text.split("\n") if t.strip()]
         with sw.timer('model_annotation'):
-            sentences_tagged = tagger.predict(sentences=text_sentences,
+            tagger.predict(sentences=text_sentences,
                                               mini_batch_size=32,
                                               embedding_storage_mode="none",
                                               # use_tokenizer=tokenizer,
                                               verbose=True)
 
         if output_type == "conll":
-            api_output, tags_stats = create_conll_output(sentences_tagged=sentences_tagged)
+            api_output, tags_stats = create_conll_output(sentences_tagged=text_sentences)
         elif output_type == "tagged":
-            api_output, tags_stats = create_tagged_text(sentences_tagged=sentences_tagged)
+            api_output, tags_stats = create_tagged_text(sentences_tagged=text_sentences)
         elif output_type == "pseudonymized":
-            api_output, tags_stats = create_pseudonymized_text(sentences_tagged=sentences_tagged)
+            api_output, tags_stats = create_pseudonymized_text(sentences_tagged=text_sentences)
 
         # deal with stats
         stats_dict["nb_analyzed_sentences"] = len(text)
