@@ -5,6 +5,7 @@ from string import ascii_uppercase
 from typing import Callable, List, Tuple
 
 from flair.data import Token, Sentence
+from flair.models import SequenceTagger
 from sacremoses import MosesTokenizer, MosesDetokenizer, MosesPunctNormalizer
 
 moses_detokenize = MosesDetokenizer(lang="fr")
@@ -26,7 +27,7 @@ def create_conll_output(sentences_tagged: List[Sentence]):
     return conll_str, Counter(tags)
 
 
-def prepare_output(text: str, tagger, word_tokenizer=None, output_type: str = "pseudonymized"):
+def prepare_output(text: str, tagger: SequenceTagger, word_tokenizer=None, output_type: str = "pseudonymized"):
     stats_dict = {}
     with sw.timer("root"):
         if not word_tokenizer:
